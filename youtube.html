@@ -49,6 +49,23 @@
         <!-- <div class="col-md-6 box" id="videoColumn"> -->
     </div>
     <script>
+        $(document).ready(function unsplash() {
+          $.ajax({
+              method: 'GET',
+              url: 'http://localhost:3000/unsplash/collection',
+          })
+              .done(function (images) {
+                  console.log(images);
+                  let random = Math.floor(Math.random() * images.length)
+                  $('body').css('background-image', `url(${images[random]})`)
+                      .css('background-size', 'cover')
+                      .css('background-attachment', 'fix')
+              })
+              .fail(function (err) {
+                  console.log(err);
+              })
+      })
+      
       $( ".search" ).keypress(function (e) {
         var q = $(this).val();
         var key = e.which;
