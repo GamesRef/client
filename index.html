@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '538086989976739',
+                cookie: true,
+                xfbml: true,
+                version: 'v3.1'
+            });
+
+            FB.AppEvents.logPageView();
+
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+
+        function checkLoginState() {
+            FB.getLoginStatus(function (response) {
+                let accToken = response.authResponse.accessToken
+                $.ajax({
+                    method: 'POST',
+                    url: 'http://localhost:3000/users/loginfb',
+                    data: {
+                        token: accToken
+                    }
+                })
+                    .done((user) => {
+                        console.log(user)
+                        // swal("Good job!", "Login Success!", "success")
+                        localStorage.setItem('token', user.token)
+                        localStorage.setItem('name', user.name)
+                        window.location = 'dashboard.html'
+                    })
+                    .fail((err) => {
+                        alert(JSON.stringify(err))
+                        console.log('eror neh')
+                    })
+            });
+        }
+    </script>
+    <div class="error">
+
+    </div>
+    <form class='login-form' style="height: 250px;">
+        <div class="flex-row">
+            <label class="lf--label" for="username">
+            </label>
+            <input class='lf--input' placeholder='Email' type='text' id="email">
+        </div>
+        <div class="flex-row">
+            <label class="lf--label" for="password">
+            </label>
+            <input class='lf--input' placeholder='Password' type='password' id="password">
+        </div>
+        <button class='lf--submit' type='button' onclick="login()">Log in</button>
+        <p class="loginwith" style="font-size: 0.8em; color: white;">or login with
+            <fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+            </fb:login-button>
+        </p>
+
+    </form>
+
+    <!-- <div> -->
+    <a href="register.html" class='lf--forgot' id="register" style="z-index: 100">don't have an account?</a>
+    <!-- </div> -->
+
+    <script>
+        let token = localStorage.getItem('token')
+
+        if (token) {
+            window.location = 'dashboard.html'
+        }
+
+        function login() {
+            let email = $('#email').val()
+            let password = $('#password').val()
+            console.log(email, password)
+            $.ajax({
+                method: 'POST',
+                url: 'http://localhost:3000/users/login',
+                data: {
+                    email: email,
+                    password: password
+                }
+            })
+                .done(function (user) {
+                    console.log(user)
+                    localStorage.setItem('token', user.token)
+                    localStorage.setItem('name', user.name)
+                    window.location = 'dashboard.html'
+                })
+                .fail(function (err) {
+                    console.log(err)
+                })
+        }
+
+        $(document).ready(function unsplash() {
+            $.ajax({
+                method: 'GET',
+                url: 'http://localhost:3000/unsplash/collection',
+            })
+                .done(function (images) {
+                    console.log(images);
+                    let random = Math.floor(Math.random() * images.length)
+                    $('body').css('background-image', `url(${images[random]})`)
+                        .css('background-size', 'cover')
+                        .css('background-attachment', 'fix')
+                })
+                .fail(function (err) {
+                    console.log(err);
+                })
+        })
+
+    </script>
+</body>
+
+</html>

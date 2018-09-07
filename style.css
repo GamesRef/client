@@ -24,7 +24,7 @@
     left: 0;
     height: 100%;
     width: 100%;
-    background-image: url(https://images7.alphacoders.com/389/389221.jpg);
+    /* background-image: url(https://images7.alphacoders.com/389/389221.jpg); */
     opacity: 1;
   }
   
@@ -103,8 +103,8 @@
   
   .lf--forgot {
     margin-top: 1em;
-    color: #d41414;
-    font-size: .65em;
+    color: white;
+    font-size: .8em;
     text-align: center;
   }
   

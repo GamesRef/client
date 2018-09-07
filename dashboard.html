@@ -80,13 +80,18 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 								</a>
 							</li>
 							<li>
-								<a href="#work" class="scroll">
+								<a href="youtube.html">
 									<span data-hover="tutorials">Heroes Guides</span>
 								</a>
 							</li>
 							<li>
 								<a href="#projects" class="scroll">
 									<span data-hover="article">News</span>
+								</a>
+							</li>
+							<li>
+								<a>
+									<button onclick="logout()">log out</button>
 								</a>
 							</li>
 						</ul>
@@ -734,6 +739,14 @@ Smartphone Compatible web template, free web designs for Nokia, Samsung, LG, Son
 					console.log(err);
 				})
 		})
+
+        function logout() {
+            localStorage.removeItem('token')
+            window.location = 'index.html'
+            FB.logout(function(response){
+                statusChangeCallback(response)
+            })
+        }
 	</script>
 </body>
 
