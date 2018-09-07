@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
+    </script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <form class='login-form' style="height: 268px;">
+        <div class="flex-row">
+            <label class="lf--label" for="username">
+            </label>
+            <input class='lf--input' placeholder='Name' type='text' id="name">
+        </div>
+        <div class="flex-row">
+            <label class="lf--label" for="password">
+            </label>
+            <input class='lf--input' placeholder='Email' type='email' id="email">
+        </div>
+        <div class="flex-row">
+            <label class="lf--label" for="password">
+            </label>
+            <input class='lf--input' placeholder='Password' type='password' id="password">
+        </div>
+        <button class='lf--submit' type='button' onclick="register()">Register</button>
+    </form>
+    <a class='lf--forgot' href='index.html' style="z-index: 100">already have an account</a>
+</body>
+<script>
+    function register() {
+        console.log('dasda')
+        let name = $('#name').val()
+        let email = $('#email').val()
+        let password = $('#password').val()
+        console.log(name, email, password)
+        $.ajax({
+            method: 'POST',
+            url: 'http://localhost:3000/users/register',
+            data: {
+                name: name,
+                email: email,
+                password: password
+            }
+        })
+            .done(function (user) {
+                window.location = 'index.html'
+            })
+    }
+
+    $(document).ready(function unsplash() {
+        $.ajax({
+            method: 'GET',
+            url: 'http://localhost:3000/unsplash/collection',
+        })
+            .done(function (images) {
+                console.log(images);
+                let random = Math.floor(Math.random() * images.length)
+                $('body').css('background-image', `url(${images[random]})`)
+                    .css('background-size', 'cover')
+                    .css('background-attachment', 'fix')
+            })
+            .fail(function (err) {
+                console.log(err);
+            })
+    })
+
+</script>
+
+</html>
